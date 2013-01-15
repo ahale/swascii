@@ -1,12 +1,11 @@
-import time
 import random
 from cStringIO import StringIO
 from PIL import Image
 from bisect import bisect
-from swift.common.swob import Request, Response, HTTPMovedPermanently, HTTPNotFound
-from swift.common.utils import cache_from_env, get_logger, split_path, config_true_value 
-from swift.common.wsgi import make_pre_authed_request, WSGIContext 
-from swift.common.http import is_success, is_redirection, HTTP_NOT_FOUND
+from swift.common.swob import Response
+from swift.common.utils import split_path
+from swift.common.wsgi import make_pre_authed_request, WSGIContext
+
 
 class _SwasciiContext(WSGIContext):
     def __init__(self, swascii, version, account, container, obj):
@@ -26,7 +25,7 @@ class _SwasciiContext(WSGIContext):
                          "W8KMA",
                          "#%$"
                          ]
-        self.zonebounds=[36,72,108,144,180,216,252]
+        self.zonebounds = [36, 72, 108, 144, 180, 216, 252]
 
     def handleJPG(self, env, start_response):
         resp = make_pre_authed_request(env, 'GET', '/%s/%s/%s/%s' % (
@@ -44,14 +43,15 @@ class _SwasciiContext(WSGIContext):
         body = ''
         for y in range(0, im.size[1]):
             for x in range(0, im.size[0]):
-                lum = 255-im.getpixel((x,y))
+                lum = 255 - im.getpixel((x, y))
                 row = bisect(self.zonebounds, lum)
                 possibles = self.greyscale[row]
-                body += possibles[random.randint(0, len(possibles)-1)]
+                body += possibles[random.randint(0, len(possibles) - 1)]
             body += '\n'
         headers = {'Content-Type': 'text/plain'}
         resp = Response(headers=headers, body=body)
         return resp(env, start_response)
+
 
 class Swascii(object):
     def __init__(self, app, conf):
@@ -72,7 +72,8 @@ class Swascii(object):
         if env['REQUEST_METHOD'] not in ('HEAD', 'GET'):
             return self.app(env, start_response)
         context = _SwasciiContext(self, version, account, container, obj)
-        return context.handleJPG(env, start_response) 
+        return context.handleJPG(env, start_response)
+
 
 def filter_factory(global_conf, **local_conf):
     """
