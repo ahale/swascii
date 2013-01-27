@@ -1,5 +1,8 @@
 """
-Some pretty bitchin' middleware
+Some pretty bitchin' middleware.
+
+Not to be confused with something that should
+be allowed near production servers.
 """
 
 __all__ = ['version_info', 'version']

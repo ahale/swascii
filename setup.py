@@ -9,6 +9,6 @@ setup(name='swascii',
       author_email='andy@wwwdata.eu',
       url='http://github.com/ahale/swascii/',
       packages=['swascii'],
-      requires=['swift(>=1.7)'],
+      requires=['swift(>=1.7)', 'PIL(>=1.1.7)'],
       entry_points={'paste.filter_factory':
-        ['middleware=swascii.middleware:filter_factory']})
+                    ['middleware=swascii.middleware:filter_factory']})
