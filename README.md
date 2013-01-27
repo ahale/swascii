@@ -4,32 +4,17 @@ swascii
 A middleware for Openstack Swift to enable serving of dynamically generated
 ASCII art from images stored within the object store.
 
+The middleware should be configured in the pipeline, probably after auths and 
+StaticWeb if you have that enabled. Using a filter section like this.
+
+    [filter:swascii]
+    use = egg:swascii#middleware
+
 To request ASCII art the usual request is performed for the image object but the
 HTTP Accept header should be set to 'text/plain'. An optional w parameter may
 be provided to change the ASCII art width from its default of 80 chars.
 
 The scaling can be a bit sketchy at some widths.
-
-	$ curl -D -  -H 'Accept: text/plain;w=30' <AUTH> <URL>
-	HTTP/1.1 200 OK
-	Content-Length: 434
-	Content-Type: text/plain
-	Date: Sun, 27 Jan 2013 16:06:08 GMT
-
-	                .cgTK8MY      
-	             ,_v2Vi|!  *$X    
-	         .(GY4=_f_TYY ,8#$A   
-	       ~Q~*m~  .  ci ,%$%K$Y  
-	     vm4dY4,  L- ,. .$A#%$#W  
-	    VK5bbN=   ,|-   K$$##%$%  
-	   )QbbQd+         e#8#$%%%W  
-	  vP5PK4K          W##$%$W$,  
-	  7KGD~X=   L*K/   W#$#MK$v   
-	  Qd~m*K  .$#$$#Y  A%KA$%/    
-	  (5QmQ+  8#MKMM$/ D###b      
-	  .d~dQ= ~%KM8KM#K !$K.       
-	   .4dG. K%$%$%##KT_          
-	     2d  -_+(+|,              
 
 	$ curl -D -  -H 'Accept: text/plain;w=40' <AUTH> <URL>
 	HTTP/1.1 200 OK
