@@ -2,7 +2,9 @@ swascii
 =======
 
 A middleware for Openstack Swift to enable serving of dynamically generated
-ASCII art from images stored within the object store.
+ASCII art from images stored within the object store using example code from
+https://stevendkay.wordpress.com/2009/09/08/generating-ascii-art-from-photographs-in-python/
+
 
 The middleware should be configured in the pipeline, probably after auths and 
 StaticWeb if you have that enabled. Using a filter section like this.
