@@ -107,7 +107,7 @@ class Swascii(object):
         except ValueError:
             return self.app(env, start_response)
 
-        if obj.split('.')[-1] in ('jpg'):
+        if obj.split('.')[-1].lower() in ('jpg', 'jpeg', 'png'):
             context = _SwasciiContext(self, version,
                                       account, container, obj, self.conf)
             return context.handleJPG(env, start_response)
